@@ -224,6 +224,7 @@ PublishScripts/
 # NuGet v3's project.json files produces more ignorable files
 *.nuget.props
 *.nuget.targets
+/nuget.config
 
 # Microsoft Azure Build Output
 csx/
@@ -423,4 +424,4 @@ FodyWeavers.xsd
 # macOS
 .DS_Store
 ._DS_Store
-/nuget.config
+
