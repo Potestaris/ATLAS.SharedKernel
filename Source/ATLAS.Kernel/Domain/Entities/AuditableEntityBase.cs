@@ -34,7 +34,7 @@ public abstract class AuditableEntityBase<TId> : EntityBase<TId>, IAuditable
     /// <summary>
     /// Sets the creation audit fields. Called by the interceptor on first insert.
     /// </summary>
-    internal void SetCreated(string createdBy, DateTimeOffset createdAt)
+    public void SetCreated(string createdBy, DateTimeOffset createdAt)
     {
         CreatedBy = createdBy;
         CreatedAt = createdAt;
@@ -43,7 +43,7 @@ public abstract class AuditableEntityBase<TId> : EntityBase<TId>, IAuditable
     /// <summary>
     /// Sets the modification audit fields. Called by the interceptor on update.
     /// </summary>
-    internal void SetUpdated(string updatedBy, DateTimeOffset updatedAt)
+    public void SetUpdated(string updatedBy, DateTimeOffset updatedAt)
     {
         UpdatedBy = updatedBy;
         UpdatedAt = updatedAt;
