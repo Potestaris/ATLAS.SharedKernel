@@ -1,5 +1,3 @@
-using ATLAS.Kernel.Abstractions.Interfaces.Domain;
-
 namespace ATLAS.Kernel.Abstractions.Interfaces.Infrastructure;
 
 /// <summary>
@@ -22,9 +20,7 @@ namespace ATLAS.Kernel.Abstractions.Interfaces.Infrastructure;
 /// await unitOfWork.SaveChangesAsync(ct);
 /// </code>
 /// </example>
-public interface ISoftDeletableRepository<T, in TId> : IRepository<T, TId>
-    where T : class, IEntity<TId>, ISoftDeletable
-    where TId : notnull
+public interface ISoftDeletableRepository<T, in TId> : IRepository<T, TId> where T : class, IEntity<TId>, ISoftDeletable where TId : notnull
 {
     /// <summary>
     /// Marks the entity as soft-deleted. The deletion timestamp and principal

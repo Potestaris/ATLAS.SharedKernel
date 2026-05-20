@@ -1,5 +1,3 @@
-using ATLAS.Kernel.Domain.Result;
-
 namespace ATLAS.Kernel.Domain.ValueObjects;
 
 /// <summary>
@@ -36,7 +34,7 @@ public sealed class DateRange : ValueObject
     private DateRange(DateOnly from, DateOnly? to)
     {
         From = from;
-        To   = to;
+        To = to;
     }
 
     /// <summary>Creates a bounded date range where <paramref name="from"/> ≤ <paramref name="to"/>.</summary>

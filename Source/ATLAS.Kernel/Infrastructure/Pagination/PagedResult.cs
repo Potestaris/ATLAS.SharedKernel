@@ -27,10 +27,10 @@ public sealed class PagedResult<T>
 {
     private PagedResult(IReadOnlyList<T> items, long totalCount, int page, int pageSize)
     {
-        Items      = items;
+        Items = items;
         TotalCount = totalCount;
-        Page       = page;
-        PageSize   = pageSize;
+        Page = page;
+        PageSize = pageSize;
     }
 
     /// <summary>Gets the items on the current page.</summary>
@@ -66,10 +66,7 @@ public sealed class PagedResult<T>
     /// <param name="items">The items on the current page.</param>
     /// <param name="totalCount">Total records matching the query.</param>
     /// <param name="pagination">The pagination parameters used to retrieve this page.</param>
-    public static PagedResult<T> Create(
-        IReadOnlyList<T> items,
-        long totalCount,
-        PaginationRequest pagination)
+    public static PagedResult<T> Create(IReadOnlyList<T> items, long totalCount, PaginationRequest pagination)
     {
         ArgumentNullException.ThrowIfNull(items);
         ArgumentNullException.ThrowIfNull(pagination);

@@ -1,5 +1,6 @@
 namespace ATLAS.Kernel.Infrastructure.Pagination;
 
+// ReSharper disable NotAccessedPositionalProperty.Global
 /// <summary>
 /// Encapsulates the parameters for a paginated, sortable, searchable data query.
 /// </summary>
@@ -20,12 +21,7 @@ namespace ATLAS.Kernel.Infrastructure.Pagination;
 /// Console.WriteLine(pagination.Skip);     // 0
 /// </code>
 /// </example>
-public sealed record PaginationRequest(
-    int       Page      = 1,
-    int       PageSize  = 20,
-    string?   SortBy    = null,
-    SortOrder SortOrder = SortOrder.Ascending,
-    string?   Search    = null)
+public sealed record PaginationRequest(int Page = 1, int PageSize = 20, string? SortBy = null, SortOrder SortOrder = SortOrder.Ascending, string? Search = null)
 {
     /// <summary>Gets the 0-based record offset for SQL <c>OFFSET</c> / EF Core <c>Skip()</c>.</summary>
     public int Skip => (Page - 1) * PageSize;
@@ -39,16 +35,12 @@ public sealed record PaginationRequest(
     /// <param name="sortBy">Optional property name to sort by.</param>
     /// <param name="order">Sort direction (default: ascending).</param>
     /// <param name="search">Optional search term (trimmed automatically).</param>
-    public static PaginationRequest Create(
-        int       page,
-        int       pageSize,
-        string?   sortBy  = null,
-        SortOrder order   = SortOrder.Ascending,
-        string?   search  = null)
+    public static PaginationRequest Create(int page, int pageSize, string? sortBy = null, SortOrder order = SortOrder.Ascending, string? search = null)
         => new(
-            Page:      Math.Max(1, page),
-            PageSize:  Math.Clamp(pageSize, 1, 200),
-            SortBy:    sortBy,
+            Page: Math.Max(1, page),
+            PageSize: Math.Clamp(pageSize, 1, 200),
+            SortBy: sortBy,
             SortOrder: order,
-            Search:    search?.Trim());
+            Search: search?.Trim());
 }
+// ReSharper restore NotAccessedPositionalProperty.Global

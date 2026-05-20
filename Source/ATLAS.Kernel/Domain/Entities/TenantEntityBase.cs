@@ -36,8 +36,10 @@ public abstract class TenantEntityBase<TId> : AuditableEntityBase<TId>,
     ITenantAware, ISoftDeletable
     where TId : notnull
 {
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     /// <inheritdoc/>
     public Guid TenantId { get; protected init; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <inheritdoc/>
     public bool IsDeleted { get; private set; }

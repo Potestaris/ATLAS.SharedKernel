@@ -34,19 +34,20 @@ namespace ATLAS.Kernel.Infrastructure.Behaviors;
 /// </example>
 public sealed class CachingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-    private readonly ICacheService                             _cache;
+    private readonly ICacheService _cache;
     private readonly ILogger<CachingBehavior<TRequest, TResponse>> _logger;
 
     /// <summary>Initializes the behavior with the required cache service and logger.</summary>
-    public CachingBehavior(ICacheService cache, ILogger<CachingBehavior<TRequest, TResponse>>   logger)
+    public CachingBehavior(ICacheService cache, ILogger<CachingBehavior<TRequest, TResponse>> logger)
     {
-        _cache  = cache;
+        _cache = cache;
         _logger = logger;
     }
 
     /// <inheritdoc/>
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
+        // ReSharper disable once SuspiciousTypeConversion.Global
         if (request is not ICacheableRequest cacheable)
             return await next(cancellationToken);
 

@@ -1,5 +1,3 @@
-using ATLAS.Kernel.Domain.Result;
-
 namespace ATLAS.Kernel.Domain.ValueObjects;
 
 /// <summary>
@@ -45,7 +43,7 @@ public sealed class Money : ValueObject
 
     private Money(decimal amount, string currencyCode)
     {
-        Amount       = amount;
+        Amount = amount;
         CurrencyCode = currencyCode;
     }
 
@@ -122,19 +120,22 @@ public sealed class Money : ValueObject
     /// <param name="right">The second monetary amount.</param>
     /// <returns><c>true</c> if <paramref name="left"/> is greater than <paramref name="right"/>; otherwise, <c>false</c>.</returns>
     /// <exception cref="InvalidOperationException">Thrown when currencies differ.</exception>
-    public static bool operator >(Money left, Money right)  { EnsureSameCurrency(left, right); return left.Amount > right.Amount; }
+    public static bool operator >(Money left, Money right) { EnsureSameCurrency(left, right); return left.Amount > right.Amount; }
+
     /// <summary>Determines whether <paramref name="left"/> is less than <paramref name="right"/> in the same currency.</summary>
     /// <param name="left">The first monetary amount.</param>
     /// <param name="right">The second monetary amount.</param>
     /// <returns><c>true</c> if <paramref name="left"/> is less than <paramref name="right"/>; otherwise, <c>false</c>.</returns>
     /// <exception cref="InvalidOperationException">Thrown when currencies differ.</exception>
-    public static bool operator <(Money left, Money right)  { EnsureSameCurrency(left, right); return left.Amount < right.Amount; }
+    public static bool operator <(Money left, Money right) { EnsureSameCurrency(left, right); return left.Amount < right.Amount; }
+
     /// <summary>Determines whether <paramref name="left"/> is greater than or equal to <paramref name="right"/> in the same currency.</summary>
     /// <param name="left">The first monetary amount.</param>
     /// <param name="right">The second monetary amount.</param>
     /// <returns><c>true</c> if <paramref name="left"/> is greater than or equal to <paramref name="right"/>; otherwise, <c>false</c>.</returns>
     /// <exception cref="InvalidOperationException">Thrown when currencies differ.</exception>
     public static bool operator >=(Money left, Money right) { EnsureSameCurrency(left, right); return left.Amount >= right.Amount; }
+
     /// <summary>Determines whether <paramref name="left"/> is less than or equal to <paramref name="right"/> in the same currency.</summary>
     /// <param name="left">The first monetary amount.</param>
     /// <param name="right">The second monetary amount.</param>
@@ -145,8 +146,7 @@ public sealed class Money : ValueObject
     private static void EnsureSameCurrency(Money left, Money right)
     {
         if (left.CurrencyCode != right.CurrencyCode)
-            throw new InvalidOperationException(
-                $"Cannot perform arithmetic between different currencies: {left.CurrencyCode} and {right.CurrencyCode}.");
+            throw new InvalidOperationException($"Cannot perform arithmetic between different currencies: {left.CurrencyCode} and {right.CurrencyCode}.");
     }
 
     /// <inheritdoc/>

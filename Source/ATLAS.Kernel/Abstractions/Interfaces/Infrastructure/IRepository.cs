@@ -1,5 +1,3 @@
-using ATLAS.Kernel.Abstractions.Interfaces.Domain;
-
 namespace ATLAS.Kernel.Abstractions.Interfaces.Infrastructure;
 
 /// <summary>
@@ -20,9 +18,7 @@ namespace ATLAS.Kernel.Abstractions.Interfaces.Infrastructure;
 /// var spain = await repo.GetByIdAsync(1, ct);
 /// </code>
 /// </example>
-public interface IRepository<T, in TId>
-    where T : class, IEntity<TId>
-    where TId : notnull
+public interface IRepository<T, in TId> where T : class, IEntity<TId> where TId : notnull
 {
     /// <summary>
     /// Retrieves an entity by its primary key, or <c>null</c> if not found.

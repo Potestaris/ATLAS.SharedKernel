@@ -1,4 +1,4 @@
-﻿namespace ATLAS.Kernel.Primitives.Interfaces;
+namespace ATLAS.Kernel.Primitives.Interfaces;
 
 /// <summary>
 /// Defines the base write repository contract for persistence operations on entities.

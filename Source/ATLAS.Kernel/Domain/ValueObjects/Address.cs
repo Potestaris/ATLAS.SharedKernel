@@ -1,5 +1,3 @@
-using ATLAS.Kernel.Domain.Result;
-
 namespace ATLAS.Kernel.Domain.ValueObjects;
 
 /// <summary>
@@ -37,15 +35,14 @@ public sealed class Address : ValueObject
     /// <summary>Gets the ISO 3166-1 alpha-2 country code (e.g., <c>"ES"</c>, <c>"US"</c>).</summary>
     public string CountryCode { get; }
 
-    private Address(
-        string street, string? street2, string city,
+    private Address(string street, string? street2, string city,
         string? state, string postalCode, string countryCode)
     {
-        Street      = street;
-        Street2     = street2;
-        City        = city;
-        State       = state;
-        PostalCode  = postalCode;
+        Street = street;
+        Street2 = street2;
+        City = city;
+        State = state;
+        PostalCode = postalCode;
         CountryCode = countryCode;
     }
 
@@ -58,23 +55,14 @@ public sealed class Address : ValueObject
     /// <param name="countryCode">ISO 3166-1 alpha-2 country code. Required (must be 2 letters).</param>
     /// <param name="street2">Optional second address line.</param>
     /// <param name="state">Optional state, province, or region.</param>
-    public static Result<Address> Create(
-        string street,
-        string city,
-        string postalCode,
-        string countryCode,
-        string? street2 = null,
-        string? state   = null)
+    public static Result<Address> Create(string street, string city, string postalCode, string countryCode, string? street2 = null, string? state = null)
     {
         if (string.IsNullOrWhiteSpace(street))
             return Error.Validation("Address.Street.Empty", "Street must not be empty.");
-
         if (string.IsNullOrWhiteSpace(city))
             return Error.Validation("Address.City.Empty", "City must not be empty.");
-
         if (string.IsNullOrWhiteSpace(postalCode))
             return Error.Validation("Address.PostalCode.Empty", "Postal code must not be empty.");
-
         if (string.IsNullOrWhiteSpace(countryCode) || countryCode.Trim().Length != 2)
             return Error.Validation("Address.CountryCode.Invalid",
                 $"Country code '{countryCode}' must be a 2-letter ISO 3166-1 alpha-2 code (e.g., 'ES', 'US').");

@@ -41,7 +41,7 @@ public static class CollectionExtensions
             throw new ArgumentOutOfRangeException(nameof(batchSize), "Batch size must be positive.");
 
         var batch = new List<T>(batchSize);
-        foreach (var item in source)
+        foreach (T item in source)
         {
             batch.Add(item);
             if (batch.Count < batchSize) continue;
@@ -62,14 +62,12 @@ public static class CollectionExtensions
     /// <summary>
     /// Performs in-memory pagination. For database queries prefer EF Core <c>Skip/Take</c>.
     /// </summary>
-    public static PagedResult<T> ToPagedResult<T>(
-        this IEnumerable<T> source,
-        PaginationRequest   pagination)
+    public static PagedResult<T> ToPagedResult<T>( this IEnumerable<T> source, PaginationRequest pagination)
     {
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(pagination);
-        var list  = source.ToList();
-        var items = list.Skip(pagination.Skip).Take(pagination.PageSize).ToList();
+        List<T> list = source.ToList();
+        List<T> items = list.Skip(pagination.Skip).Take(pagination.PageSize).ToList();
         return PagedResult<T>.Create(items, list.Count, pagination);
     }
 

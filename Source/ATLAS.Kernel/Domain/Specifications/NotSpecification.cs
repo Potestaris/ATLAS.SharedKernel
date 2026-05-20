@@ -15,9 +15,10 @@ internal sealed class NotSpecification<T> : Specification<T>
     /// <inheritdoc/>
     public override Expression<Func<T, bool>> ToExpression()
     {
-        var innerExpr = _inner.ToExpression();
-        var param = Expression.Parameter(typeof(T), "x");
-        var body  = Expression.Not(Expression.Invoke(innerExpr, param));
+        Expression<Func<T, bool>> innerExpr = _inner.ToExpression();
+        ParameterExpression param = Expression.Parameter(typeof(T), "x");
+        UnaryExpression body = Expression.Not(Expression.Invoke(innerExpr, param));
+
         return Expression.Lambda<Func<T, bool>>(body, param);
     }
 }

@@ -40,22 +40,24 @@ namespace ATLAS.Kernel.Domain.Entities;
 /// }
 /// </code>
 /// </example>
-public abstract class TenantReferenceEntity<TId> : AuditableEntityBase<TId>,
-    IMasterData, IActivatable, ITenantAware
-    where TId : notnull
+public abstract class TenantReferenceEntity<TId> : AuditableEntityBase<TId>, IMasterData, IActivatable, ITenantAware where TId : notnull
 {
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     /// <inheritdoc/>
     public Guid TenantId { get; protected init; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <inheritdoc/>
     public bool IsActive { get; private set; } = true;
 
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     /// <summary>
     /// Gets a value indicating whether this reference value was seeded by the
     /// system (<c>true</c>) or created by the tenant (<c>false</c>).
     /// System-defined values cannot be deactivated by tenants.
     /// </summary>
     public bool IsSystemDefined { get; protected init; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <summary>EF Core / serialization constructor.</summary>
     protected TenantReferenceEntity() { }
@@ -80,9 +82,9 @@ public abstract class TenantReferenceEntity<TId> : AuditableEntityBase<TId>,
     public void Deactivate()
     {
         if (IsSystemDefined)
-            throw new InvalidOperationException(
-                $"System-defined reference entity '{GetType().Name}' (Id={Id}) cannot be deactivated.");
-        if (!IsActive) return;
+            throw new InvalidOperationException($"System-defined reference entity '{GetType().Name}' (Id={Id}) cannot be deactivated.");
+        if (!IsActive)
+            return;
         IsActive = false;
     }
 }

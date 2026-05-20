@@ -1,8 +1,9 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Data;
 
 namespace ATLAS.Kernel.Extensions;
 
+// ReSharper disable InconsistentNaming
 /// <summary>
 /// Extension methods for <see cref="IEnumerable{T}"/> collections, providing data conversion utilities.
 /// </summary>
@@ -19,13 +20,13 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(data);
 
-        var properties = TypeDescriptor.GetProperties(typeof(T));
+        PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
         DataTable table = new();
         foreach (PropertyDescriptor prop in properties)
             table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
         foreach (var item in data)
         {
-            var row = table.NewRow();
+            DataRow row = table.NewRow();
             foreach (PropertyDescriptor prop in properties)
                 row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
             table.Rows.Add(row);
@@ -33,3 +34,4 @@ public static class IEnumerableExtensions
         return table;
     }
 }
+// ReSharper restore InconsistentNaming

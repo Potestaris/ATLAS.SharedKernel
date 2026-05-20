@@ -1,5 +1,6 @@
 namespace ATLAS.Kernel.Domain.Result;
 
+// ReSharper disable NotAccessedPositionalProperty.Global
 /// <summary>
 /// Represents a single field-level validation failure, typically produced
 /// by a FluentValidation validator and collected in a
@@ -28,8 +29,5 @@ namespace ATLAS.Kernel.Domain.Result;
 /// return ValidationResult.WithErrors(errors);
 /// </code>
 /// </example>
-public sealed record ValidationError(
-    string PropertyName,
-    string ErrorMessage,
-    string ErrorCode,
-    object? AttemptedValue = null);
+public sealed record ValidationError(string PropertyName, string ErrorMessage, string ErrorCode, object? AttemptedValue = null);
+// ReSharper restore NotAccessedPositionalProperty.Global

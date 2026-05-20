@@ -1,4 +1,4 @@
-﻿namespace ATLAS.Kernel.Extensions;
+namespace ATLAS.Kernel.Extensions;
 
 /// <summary>
 /// Provides extension methods for working with arrays.
@@ -18,6 +18,7 @@ public static class ArrayExtensions
     {
         ArgumentNullException.ThrowIfNull(target);
         var result = new T[target.Length + 1];
+
         if (!prepend)
         {
             target.CopyTo(result, 0);

@@ -15,8 +15,7 @@ public sealed class GuardClause
     /// <param name="parameterName">The name of the parameter being checked.</param>
     /// <returns>The non-null value.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> is null.</exception>
-    public T Null<T>(T? value, string parameterName)
-        where T : class
+    public T Null<T>(T? value, string parameterName) where T : class
     {
         ArgumentNullException.ThrowIfNull(value, parameterName);
         return value;
@@ -45,6 +44,7 @@ public sealed class GuardClause
         return string.IsNullOrEmpty(value) ? throw new ArgumentException($"'{parameterName}' must not be null or empty.", parameterName) : value;
     }
 
+    // ReSharper disable PossibleMultipleEnumeration
     /// <summary>
     /// Throws <see cref="ArgumentException"/> if the collection is null or contains no elements.
     /// </summary>
@@ -53,10 +53,24 @@ public sealed class GuardClause
     /// <returns>The non-empty collection.</returns>
     public IEnumerable<T> NullOrEmpty<T>(IEnumerable<T>? value, string parameterName)
     {
-        if (value is null || !value.Any())
+        if (value is null)
             throw new ArgumentException($"'{parameterName}' must not be null or empty.", parameterName);
+
+        if (value.TryGetNonEnumeratedCount(out var count))
+        {
+            if (count == 0)
+                throw new ArgumentException($"'{parameterName}' must not be null or empty.", parameterName);
+
+            return value;
+        }
+
+        using var enumerator = value.GetEnumerator();
+        if (!enumerator.MoveNext())
+            throw new ArgumentException($"'{parameterName}' must not be null or empty.", parameterName);
+
         return value;
     }
+    // ReSharper restore PossibleMultipleEnumeration
 
     /// <summary>
     /// Throws <see cref="ArgumentException"/> if <paramref name="value"/> equals the
@@ -65,8 +79,7 @@ public sealed class GuardClause
     /// <param name="value">The value to check.</param>
     /// <param name="parameterName">The name of the parameter being checked.</param>
     /// <returns>The non-default value.</returns>
-    public T Default<T>(T value, string parameterName)
-        where T : struct
+    public T Default<T>(T value, string parameterName) where T : struct
     {
         if (EqualityComparer<T>.Default.Equals(value, default))
             throw new ArgumentException(
