@@ -1,4 +1,4 @@
-﻿namespace ATLAS.Kernel.Primitives.Interfaces;
+namespace ATLAS.Kernel.Primitives.Interfaces;
 
 /// <summary>
 /// Defines the unit-of-work pattern that groups multiple repository operations

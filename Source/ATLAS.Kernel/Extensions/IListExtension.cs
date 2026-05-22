@@ -1,5 +1,6 @@
-﻿namespace ATLAS.Kernel.Extensions;
+namespace ATLAS.Kernel.Extensions;
 
+// ReSharper disable InconsistentNaming
 /// <summary>
 /// Extension methods for <see cref="IList{T}"/> collections, providing null and empty checks.
 /// </summary>
@@ -16,3 +17,4 @@ public static class IListExtension
         return collection == null || collection.Count == 0;
     }
 }
+// ReSharper restore InconsistentNaming

@@ -1,5 +1,3 @@
-using ATLAS.Kernel.Abstractions.Interfaces.Domain;
-
 namespace ATLAS.Kernel.Abstractions.Interfaces.Infrastructure;
 
 /// <summary>
@@ -27,8 +25,7 @@ public interface IEventPublisher
     /// <typeparam name="T">The concrete integration event type.</typeparam>
     /// <param name="integrationEvent">The event to publish. Must not be null.</param>
     /// <param name="cancellationToken">Propagates notification that the operation should be cancelled.</param>
-    Task PublishAsync<T>(T integrationEvent, CancellationToken cancellationToken = default)
-        where T : class, IIntegrationEvent;
+    Task PublishAsync<T>(T integrationEvent, CancellationToken cancellationToken = default) where T : class, IIntegrationEvent;
 
     /// <summary>
     /// Publishes an integration event using the base interface, useful when the

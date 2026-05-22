@@ -24,11 +24,13 @@ public sealed class LoggingBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
+    // ReSharper disable StaticMemberInGenericType
     /// <summary>
     /// Requests exceeding this duration (in milliseconds) are logged as warnings.
     /// Default: 500 ms.
     /// </summary>
     public static int SlowRequestThresholdMs { get; set; } = 500;
+    // ReSharper restore StaticMemberInGenericType
 
     private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
 
@@ -37,12 +39,9 @@ public sealed class LoggingBehavior<TRequest, TResponse>
         => _logger = logger;
 
     /// <inheritdoc/>
-    public async Task<TResponse> Handle(
-        TRequest                          request,
-        RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var name = typeof(TRequest).Name;
+        string name = typeof(TRequest).Name;
         _logger.LogInformation("[Pipeline] Handling {RequestName}", name);
 
         var sw = Stopwatch.StartNew();

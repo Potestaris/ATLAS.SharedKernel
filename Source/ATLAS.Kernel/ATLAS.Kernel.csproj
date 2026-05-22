@@ -9,6 +9,7 @@
         <AssemblyName>ATLAS.Kernel</AssemblyName>
         <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
         <BaseOutputPath>$(SolutionDir)Bin\$(MSBuildProjectName)\</BaseOutputPath>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>

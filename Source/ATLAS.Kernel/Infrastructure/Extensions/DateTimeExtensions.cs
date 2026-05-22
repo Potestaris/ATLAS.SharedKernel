@@ -34,7 +34,7 @@ public static class DateTimeExtensions
         /// <summary>Returns the last instant of the same month.</summary>
         public DateTimeOffset EndOfMonth()
         {
-            var last = DateTime.DaysInMonth(v.Year, v.Month);
+            int last = DateTime.DaysInMonth(v.Year, v.Month);
             return new DateTimeOffset(v.Year, v.Month, last, 23, 59, 59, 999, v.Offset).AddTicks(9999);
         }
 
@@ -64,21 +64,21 @@ public static class DateTimeExtensions
     /// <param name="relativeTo">The "now" baseline. Defaults to <see cref="DateTimeOffset.UtcNow"/>.</param>
     public static string ToRelativeString(this DateTimeOffset v, DateTimeOffset? relativeTo = null)
     {
-        var now  = relativeTo ?? DateTimeOffset.UtcNow;
-        var diff = now - v;
-        var abs  = Math.Abs(diff.TotalSeconds);
-        var past = diff.TotalSeconds >= 0;
+        DateTimeOffset now = relativeTo ?? DateTimeOffset.UtcNow;
+        TimeSpan diff = now - v;
+        double abs = Math.Abs(diff.TotalSeconds);
+        bool past = diff.TotalSeconds >= 0;
         string Suffix(bool p) => p ? "ago" : "from now";
 
         return abs switch
         {
-            < 5      => "just now",
-            < 60     => $"{(int)abs}s {Suffix(past)}",
-            < 3_600  => $"{(int)(abs / 60)}m {Suffix(past)}",
+            < 5 => "just now",
+            < 60 => $"{(int)abs}s {Suffix(past)}",
+            < 3_600 => $"{(int)(abs / 60)}m {Suffix(past)}",
             < 86_400 => $"{(int)(abs / 3_600)}h {Suffix(past)}",
-            < 2_592_000  => $"{(int)(abs / 86_400)} day{((int)(abs/86_400)==1?"":"s")} {Suffix(past)}",
-            < 31_536_000 => $"{(int)(abs / 2_592_000)} month{((int)(abs/2_592_000)==1?"":"s")} {Suffix(past)}",
-            _            => $"{(int)(abs / 31_536_000)} year{((int)(abs/31_536_000)==1?"":"s")} {Suffix(past)}",
+            < 2_592_000 => $"{(int)(abs / 86_400)} day{((int)(abs / 86_400) == 1 ? "" : "s")} {Suffix(past)}",
+            < 31_536_000 => $"{(int)(abs / 2_592_000)} month{((int)(abs / 2_592_000) == 1 ? "" : "s")} {Suffix(past)}",
+            _ => $"{(int)(abs / 31_536_000)} year{((int)(abs / 31_536_000) == 1 ? "" : "s")} {Suffix(past)}",
         };
     }
 

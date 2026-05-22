@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace ATLAS.Kernel.Extensions;
 
@@ -70,13 +69,13 @@ public static class DateExtensions
     {
         try
         {
-            var match = Regex.Match(s, regex);
+            Match match = Regex.Match(s, regex);
             if (match.Success)
             {
-                var value = match.Groups[0].ToString();
+                string value = match.Groups[0].ToString();
                 if (!string.IsNullOrEmpty(value))
                 {
-                    return DateExtensions.ParseExactOrDefault(value, format, provider, defaultValue);
+                    return ParseExactOrDefault(value, format, provider, defaultValue);
                 }
                 else
                 {

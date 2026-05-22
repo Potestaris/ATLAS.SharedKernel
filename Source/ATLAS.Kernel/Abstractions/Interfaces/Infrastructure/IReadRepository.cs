@@ -1,5 +1,3 @@
-using ATLAS.Kernel.Abstractions.Interfaces.Domain;
-
 namespace ATLAS.Kernel.Abstractions.Interfaces.Infrastructure;
 
 /// <summary>
@@ -37,9 +35,7 @@ namespace ATLAS.Kernel.Abstractions.Interfaces.Infrastructure;
 /// }
 /// </code>
 /// </example>
-public interface IReadRepository<T, in TId>
-    where T : class, IEntity<TId>
-    where TId : notnull
+public interface IReadRepository<T, in TId> where T : class, IEntity<TId>  where TId : notnull
 {
     /// <summary>
     /// Retrieves an entity by its primary key without change tracking,

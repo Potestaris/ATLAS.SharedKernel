@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace ATLAS.Kernel.Infrastructure.Behaviors;
 
 /// <summary>
@@ -26,27 +28,20 @@ namespace ATLAS.Kernel.Infrastructure.Behaviors;
 /// services.AddTransient(typeof(IPipelineBehavior&lt;,&gt;), typeof(TenantBehavior&lt;,&gt;));
 /// </code>
 /// </example>
-public sealed class TenantBehavior<TRequest, TResponse>
-    : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+public sealed class TenantBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-    private readonly ITenantContext                         _tenantContext;
+    private readonly ITenantContext _tenantContext;
     private readonly ILogger<TenantBehavior<TRequest, TResponse>> _logger;
 
     /// <summary>Initialises the behavior with the tenant context and logger.</summary>
-    public TenantBehavior(
-        ITenantContext                                tenantContext,
-        ILogger<TenantBehavior<TRequest, TResponse>> logger)
+    public TenantBehavior(ITenantContext tenantContext, ILogger<TenantBehavior<TRequest, TResponse>> logger)
     {
         _tenantContext = tenantContext;
-        _logger        = logger;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
-    public async Task<TResponse> Handle(
-        TRequest                          request,
-        RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (!_tenantContext.IsResolved)
         {
@@ -54,22 +49,23 @@ public sealed class TenantBehavior<TRequest, TResponse>
                 "[TenantBehavior] Request {RequestName} rejected — tenant context not resolved.",
                 typeof(TRequest).Name);
 
-            var error = Error.Unauthorized("Tenant.NotResolved",
+            Error error = Error.Unauthorized("Tenant.NotResolved",
                 "The request could not be processed because the tenant identity was not established.");
 
             if (typeof(TResponse) == typeof(Result))
                 return (TResponse)(object)Result.Fail(error);
 
-            if (typeof(TResponse).IsGenericType &&
-                typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
+            if (!typeof(TResponse).IsGenericType ||
+                typeof(TResponse).GetGenericTypeDefinition() != typeof(Result<>))
             {
-                var failMethod = typeof(Result<>)
-                    .MakeGenericType(typeof(TResponse).GetGenericArguments()[0])
-                    .GetMethod(nameof(Result<object>.Fail), [typeof(Error)])!;
-                return (TResponse)failMethod.Invoke(null, [error])!;
+                throw new UnauthorizedAccessException(error.Message);
             }
 
-            throw new UnauthorizedAccessException(error.Message);
+            MethodInfo failMethod = typeof(Result<>)
+                .MakeGenericType(typeof(TResponse).GetGenericArguments()[0])
+                .GetMethod(nameof(Result<object>.Fail), [typeof(Error)])!;
+            return (TResponse)failMethod.Invoke(null, [error])!;
+
         }
 
         _logger.LogDebug("[TenantBehavior] Tenant={TenantId} — handling {RequestName}",

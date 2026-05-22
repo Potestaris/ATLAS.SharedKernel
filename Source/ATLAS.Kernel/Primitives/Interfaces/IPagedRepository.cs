@@ -1,4 +1,4 @@
-﻿namespace ATLAS.Kernel.Primitives.Interfaces;
+namespace ATLAS.Kernel.Primitives.Interfaces;
 
 /// <summary>
 /// Extends the base <see cref="IRepository{TEntity}"/> interface with pagination support,
@@ -14,8 +14,7 @@ public interface IPagedRepository<TEntity> : IRepository<TEntity> where TEntity 
     /// <param name="pageSize">The maximum number of entities to retrieve per page.</param>
     /// <param name="cancellationToken">Propagates notification that the operation should be cancelled.</param>
     /// <returns>A read-only collection of entities on the specified page.</returns>
-    Task<IReadOnlyCollection<TEntity>> GetAllPagedAsync(int pageNumber, int pageSize, 
-        CancellationToken cancellationToken = default);
+    Task<IReadOnlyCollection<TEntity>> GetAllPagedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Returns the total count of all entities in the repository.

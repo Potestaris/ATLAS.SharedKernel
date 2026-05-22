@@ -1,9 +1,9 @@
+global using ATLAS.Kernel.Abstractions.Interfaces.Domain;
+global using ATLAS.Kernel.Abstractions.Interfaces.Infrastructure;
+global using ATLAS.Kernel.Domain.Result;
 global using MediatR;
 global using Microsoft.Extensions.Logging;
 global using System.Diagnostics;
 global using System.Linq.Expressions;
 global using System.Text;
 global using System.Text.RegularExpressions;
-global using ATLAS.Kernel.Abstractions.Interfaces.Domain;
-global using ATLAS.Kernel.Abstractions.Interfaces.Infrastructure;
-global using ATLAS.Kernel.Domain.Result;

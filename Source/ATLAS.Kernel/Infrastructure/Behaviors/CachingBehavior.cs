@@ -32,30 +32,24 @@ namespace ATLAS.Kernel.Infrastructure.Behaviors;
 /// services.AddTransient(typeof(IPipelineBehavior&lt;,&gt;), typeof(CachingBehavior&lt;,&gt;));
 /// </code>
 /// </example>
-public sealed class CachingBehavior<TRequest, TResponse>
-    : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+public sealed class CachingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-    private readonly ICacheService                             _cache;
+    private readonly ICacheService _cache;
     private readonly ILogger<CachingBehavior<TRequest, TResponse>> _logger;
 
-    /// <summary>Initialises the behavior with the required cache service and logger.</summary>
-    public CachingBehavior(
-        ICacheService                                    cache,
-        ILogger<CachingBehavior<TRequest, TResponse>>   logger)
+    /// <summary>Initializes the behavior with the required cache service and logger.</summary>
+    public CachingBehavior(ICacheService cache, ILogger<CachingBehavior<TRequest, TResponse>> logger)
     {
-        _cache  = cache;
+        _cache = cache;
         _logger = logger;
     }
 
     /// <inheritdoc/>
-    public async Task<TResponse> Handle(
-        TRequest                          request,
-        RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
+        // ReSharper disable once SuspiciousTypeConversion.Global
         if (request is not ICacheableRequest cacheable)
-            return await next();
+            return await next(cancellationToken);
 
         var cached = await _cache.GetAsync<TResponse>(cacheable.CacheKey, cancellationToken);
         if (cached is not null)
@@ -65,7 +59,7 @@ public sealed class CachingBehavior<TRequest, TResponse>
         }
 
         _logger.LogDebug("[Cache] MISS — key: {CacheKey}", cacheable.CacheKey);
-        var response = await next();
+        TResponse response = await next(cancellationToken);
 
         await _cache.SetAsync(cacheable.CacheKey, response, cacheable.CacheDuration, cancellationToken);
         return response;

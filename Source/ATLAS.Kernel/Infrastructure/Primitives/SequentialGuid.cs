@@ -35,8 +35,8 @@ public static class SequentialGuid
     /// <returns>A <see cref="Guid"/> that sorts later than all previously generated values.</returns>
     public static Guid NewSequentialGuid()
     {
-        var guidBytes      = Guid.NewGuid().ToByteArray();
-        var timestampBytes = BitConverter.GetBytes(DateTime.UtcNow.Ticks);
+        byte[] guidBytes = Guid.NewGuid().ToByteArray();
+        byte[] timestampBytes = BitConverter.GetBytes(DateTime.UtcNow.Ticks);
 
         if (BitConverter.IsLittleEndian) Array.Reverse(timestampBytes);
 
@@ -57,16 +57,17 @@ public static class SequentialGuid
     /// <returns>A <see cref="Guid"/> that sorts later than all previously generated values.</returns>
     public static Guid NewSequentialGuidAtEnd()
     {
-        var randomBytes    = new byte[10];
-        var timestampBytes = BitConverter.GetBytes(DateTime.UtcNow.Ticks / 10_000L);
+        byte[] randomBytes = new byte[10];
+        byte[] timestampBytes = BitConverter.GetBytes(DateTime.UtcNow.Ticks / 10_000L);
 
         Random.Shared.NextBytes(randomBytes);
 
-        if (BitConverter.IsLittleEndian) Array.Reverse(timestampBytes);
+        if (BitConverter.IsLittleEndian)
+            Array.Reverse(timestampBytes);
 
-        var allBytes = new byte[16];
-        Buffer.BlockCopy(randomBytes,    0, allBytes,  0, 10);
-        Buffer.BlockCopy(timestampBytes, 2, allBytes, 10,  6);
+        byte[] allBytes = new byte[16];
+        Buffer.BlockCopy(randomBytes, 0, allBytes, 0, 10);
+        Buffer.BlockCopy(timestampBytes, 2, allBytes, 10, 6);
 
         return new Guid(allBytes);
     }

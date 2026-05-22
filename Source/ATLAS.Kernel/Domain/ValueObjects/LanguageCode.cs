@@ -1,6 +1,3 @@
-using System.Text.RegularExpressions;
-using ATLAS.Kernel.Domain.Result;
-
 namespace ATLAS.Kernel.Domain.ValueObjects;
 
 /// <summary>
@@ -36,9 +33,9 @@ public sealed class LanguageCode : ValueObject
 
     private LanguageCode(string value, string language, string? region)
     {
-        Value    = value;
+        Value = value;
         Language = language;
-        Region   = region;
+        Region = region;
     }
 
     /// <summary>Creates a validated BCP-47 <see cref="LanguageCode"/> value object.</summary>
@@ -48,15 +45,15 @@ public sealed class LanguageCode : ValueObject
         if (string.IsNullOrWhiteSpace(tag))
             return Error.Validation("LanguageCode.Empty", "Language code must not be empty.");
 
-        var normalised = tag.Trim();
+        string normalised = tag.Trim();
         if (!_bcp47.IsMatch(normalised))
             return Error.Validation("LanguageCode.Format.Invalid",
                 $"'{tag}' is not a valid BCP-47 language tag (e.g., 'es-ES', 'en-US').");
 
-        var parts    = normalised.Split('-');
-        var language = parts[0].ToLowerInvariant();
-        var region   = parts.Length > 1 ? parts[1].ToUpperInvariant() : null;
-        var value    = region is not null ? $"{language}-{region}" : language;
+        string[] parts = normalised.Split('-');
+        string language = parts[0].ToLowerInvariant();
+        string? region = parts.Length > 1 ? parts[1].ToUpperInvariant() : null;
+        string value = region is not null ? $"{language}-{region}" : language;
 
         return new LanguageCode(value, language, region);
     }

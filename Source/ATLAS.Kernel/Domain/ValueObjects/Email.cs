@@ -1,6 +1,3 @@
-using System.Text.RegularExpressions;
-using ATLAS.Kernel.Domain.Result;
-
 namespace ATLAS.Kernel.Domain.ValueObjects;
 
 /// <summary>
@@ -42,7 +39,7 @@ public sealed class Email : ValueObject
         if (string.IsNullOrWhiteSpace(email))
             return Error.Validation("Email.Empty", "Email address must not be empty.");
 
-        var normalised = email.Trim().ToLowerInvariant();
+        string normalised = email.Trim().ToLowerInvariant();
 
         if (normalised.Length > 320)
             return Error.Validation("Email.TooLong", "Email address must not exceed 320 characters.");

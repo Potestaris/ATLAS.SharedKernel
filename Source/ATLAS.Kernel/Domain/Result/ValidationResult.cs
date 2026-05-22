@@ -63,12 +63,11 @@ public sealed class ValidationResult
     /// </exception>
     public static ValidationResult WithErrors(IEnumerable<ValidationError> errors)
     {
-        var list = errors?.ToList()
-            ?? throw new ArgumentNullException(nameof(errors));
+        ArgumentNullException.ThrowIfNull(errors);
+        List<ValidationError> list = errors.ToList();
 
         if (list.Count == 0)
-            throw new ArgumentException(
-                "Cannot create a failed ValidationResult with zero errors.", nameof(errors));
+            throw new ArgumentException("Cannot create a failed ValidationResult with zero errors.", nameof(errors));
 
         return new ValidationResult(list);
     }

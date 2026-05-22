@@ -1,4 +1,4 @@
-﻿namespace ATLAS.Kernel.Primitives.Interfaces;
+namespace ATLAS.Kernel.Primitives.Interfaces;
 
 /// <summary>
 /// Defines a read-only repository interface for retrieving entities without the ability to modify them.

@@ -1,4 +1,7 @@
+using System.Reflection;
 using FluentValidation;
+using FluentValidation.Results;
+using ValidationResult = ATLAS.Kernel.Domain.Result.ValidationResult;
 
 namespace ATLAS.Kernel.Infrastructure.Behaviors;
 
@@ -52,39 +55,38 @@ public sealed class ValidationBehavior<TRequest, TResponse>
         => _validators = validators;
 
     /// <inheritdoc/>
-    public async Task<TResponse> Handle(
-        TRequest                          request,
-        RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (!_validators.Any()) return await next();
 
-        var ctx      = new ValidationContext<TRequest>(request);
-        var results  = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(ctx, cancellationToken)));
-        var failures = results.SelectMany(r => r.Errors).Where(f => f is not null).ToList();
+        var ctx = new ValidationContext<TRequest>(request);
+        FluentValidation.Results.ValidationResult[] results = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(ctx, cancellationToken)));
+        List<ValidationFailure> failures = results.SelectMany(r => r.Errors).Where(f => f is not null).ToList();
 
-        if (failures.Count == 0) return await next();
+        if (failures.Count == 0)
+            return await next(cancellationToken);
 
         var errors = failures
             .Select(f => new ValidationError(f.PropertyName, f.ErrorMessage, f.ErrorCode, f.AttemptedValue))
             .ToList();
 
-        var validationResult = Domain.Result.ValidationResult.WithErrors(errors);
+        ValidationResult validationResult = ValidationResult.WithErrors(errors);
 
         if (typeof(TResponse) == typeof(Result))
             return (TResponse)(object)validationResult.ToResult();
 
-        if (typeof(TResponse).IsGenericType &&
-            typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
+        if (!typeof(TResponse).IsGenericType ||
+            typeof(TResponse).GetGenericTypeDefinition() != typeof(Result<>))
         {
-            var error = Error.Validation("Validation.Failed",
-                $"Validation failed with {failures.Count} error(s).");
-            var failMethod = typeof(Result<>)
-                .MakeGenericType(typeof(TResponse).GetGenericArguments()[0])
-                .GetMethod(nameof(Result<object>.Fail), [typeof(Error)])!;
-            return (TResponse)failMethod.Invoke(null, [error])!;
+            throw new ValidationException(failures);
         }
 
-        throw new FluentValidation.ValidationException(failures);
+        Error error = Error.Validation("Validation.Failed",
+            $"Validation failed with {failures.Count} error(s).");
+        MethodInfo failMethod = typeof(Result<>)
+            .MakeGenericType(typeof(TResponse).GetGenericArguments()[0])
+            .GetMethod(nameof(Result<object>.Fail), [typeof(Error)])!;
+        return (TResponse)failMethod.Invoke(null, [error])!;
+
     }
 }

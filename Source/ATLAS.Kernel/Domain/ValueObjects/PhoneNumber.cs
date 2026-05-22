@@ -1,6 +1,3 @@
-using System.Text.RegularExpressions;
-using ATLAS.Kernel.Domain.Result;
-
 namespace ATLAS.Kernel.Domain.ValueObjects;
 
 /// <summary>
