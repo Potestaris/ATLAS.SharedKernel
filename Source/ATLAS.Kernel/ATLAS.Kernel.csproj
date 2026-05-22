@@ -5,6 +5,7 @@
         <LangVersion>latestmajor</LangVersion>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RootNamespace>ATLAS.Kernel</RootNamespace>
         <AssemblyName>ATLAS.Kernel</AssemblyName>
         <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
