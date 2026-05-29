@@ -78,10 +78,8 @@ public abstract class EntityBase<TId> : IEntity<TId> where TId : notnull
         HashCode.Combine(GetType(), Id);
 
     /// <summary>Determines whether two entities are equal by identity.</summary>
-    public static bool operator ==(EntityBase<TId>? left, EntityBase<TId>? right) =>
-        left?.Equals(right) ?? right is null;
+    public static bool operator ==(EntityBase<TId>? left, EntityBase<TId>? right) => left?.Equals(right) ?? right is null;
 
     /// <summary>Determines whether two entities are not equal by identity.</summary>
-    public static bool operator !=(EntityBase<TId>? left, EntityBase<TId>? right) =>
-        !(left == right);
+    public static bool operator !=(EntityBase<TId>? left, EntityBase<TId>? right) => !(left == right);
 }
