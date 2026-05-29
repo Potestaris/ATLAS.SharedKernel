@@ -58,6 +58,6 @@ public interface IRepository<TEntity> where TEntity : class
     /// <param name="id">The primary key value to search for.</param>
     /// <param name="cancellationToken">Propagates notification that the operation should be canceled.</param>
     /// <returns>The entity if found, or <c>null</c>.</returns>
-    Task<TEntity?> GetByIdAsync(long id, CancellationToken cancellationToken = default);
+    Task<TEntity?> GetByIdAsync(ulong id, CancellationToken cancellationToken = default);
     #endregion
 }

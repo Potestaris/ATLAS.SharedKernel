@@ -10,8 +10,7 @@ namespace ATLAS.Kernel.Domain.Entities;
 /// <c>IDateTimeProvider</c>. Application code should never assign them manually.
 /// </remarks>
 /// <typeparam name="TId">The type of the primary key.</typeparam>
-public abstract class AuditableEntityBase<TId> : EntityBase<TId>, IAuditable
-    where TId : notnull
+public abstract class AuditableEntityBase<TId> : EntityBase<TId>, IAuditable where TId : notnull
 {
     /// <inheritdoc/>
     public DateTimeOffset CreatedAt { get; private set; }

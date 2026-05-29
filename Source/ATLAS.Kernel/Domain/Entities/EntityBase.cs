@@ -38,8 +38,7 @@ namespace ATLAS.Kernel.Domain.Entities;
 /// }
 /// </code>
 /// </example>
-public abstract class EntityBase<TId> : IEntity<TId>
-    where TId : notnull
+public abstract class EntityBase<TId> : IEntity<TId> where TId : notnull
 {
     /// <summary>Gets the unique identifier of this entity.</summary>
     public TId Id { get; protected init; } = default!;
@@ -65,9 +64,12 @@ public abstract class EntityBase<TId> : IEntity<TId>
     /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
-        if (obj is null || obj.GetType() != GetType()) return false;
-        if (ReferenceEquals(this, obj)) return true;
+        if (obj is null || obj.GetType() != GetType())
+            return false;
+        if (ReferenceEquals(this, obj))
+            return true;
         var other = (EntityBase<TId>)obj;
+
         return EqualityComparer<TId>.Default.Equals(Id, other.Id);
     }
 

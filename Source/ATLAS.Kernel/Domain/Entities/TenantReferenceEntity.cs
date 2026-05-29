@@ -71,7 +71,8 @@ public abstract class TenantReferenceEntity<TId> : AuditableEntityBase<TId>, IMa
     /// </exception>
     public void Activate()
     {
-        if (IsActive) return;
+        if (IsActive)
+            return;
         IsActive = true;
     }
 

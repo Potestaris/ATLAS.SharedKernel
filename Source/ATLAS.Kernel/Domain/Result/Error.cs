@@ -37,38 +37,32 @@ public readonly record struct Error(string Code, string Message, ErrorType Type)
     /// <summary>Creates a validation error.</summary>
     /// <param name="code">The machine-readable error code (e.g., <c>"Customer.Name.Empty"</c>).</param>
     /// <param name="message">A human-readable description.</param>
-    public static Error Validation(string code, string message) =>
-        new(code, message, ErrorType.Validation);
+    public static Error Validation(string code, string message) => new(code, message, ErrorType.Validation);
 
     /// <summary>Creates a not-found error.</summary>
     /// <param name="code">The machine-readable error code (e.g., <c>"Customer.NotFound"</c>).</param>
     /// <param name="message">A human-readable description.</param>
-    public static Error NotFound(string code, string message) =>
-        new(code, message, ErrorType.NotFound);
+    public static Error NotFound(string code, string message) => new(code, message, ErrorType.NotFound);
 
     /// <summary>Creates a conflict error.</summary>
     /// <param name="code">The machine-readable error code.</param>
     /// <param name="message">A human-readable description.</param>
-    public static Error Conflict(string code, string message) =>
-        new(code, message, ErrorType.Conflict);
+    public static Error Conflict(string code, string message) => new(code, message, ErrorType.Conflict);
 
     /// <summary>Creates a forbidden error.</summary>
     /// <param name="code">The machine-readable error code.</param>
     /// <param name="message">A human-readable description.</param>
-    public static Error Forbidden(string code, string message) =>
-        new(code, message, ErrorType.Forbidden);
+    public static Error Forbidden(string code, string message) => new(code, message, ErrorType.Forbidden);
 
     /// <summary>Creates an unauthorized error.</summary>
     /// <param name="code">The machine-readable error code.</param>
     /// <param name="message">A human-readable description.</param>
-    public static Error Unauthorized(string code, string message) =>
-        new(code, message, ErrorType.Unauthorized);
+    public static Error Unauthorized(string code, string message) => new(code, message, ErrorType.Unauthorized);
 
     /// <summary>Creates an unexpected (internal) error.</summary>
     /// <param name="code">The machine-readable error code.</param>
     /// <param name="message">A human-readable description.</param>
-    public static Error Unexpected(string code, string message) =>
-        new(code, message, ErrorType.Unexpected);
+    public static Error Unexpected(string code, string message) => new(code, message, ErrorType.Unexpected);
 
     /// <inheritdoc/>
     public override string ToString() => $"[{Type}] {Code}: {Message}";

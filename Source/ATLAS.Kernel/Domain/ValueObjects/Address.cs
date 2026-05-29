@@ -35,8 +35,7 @@ public sealed class Address : ValueObject
     /// <summary>Gets the ISO 3166-1 alpha-2 country code (e.g., <c>"ES"</c>, <c>"US"</c>).</summary>
     public string CountryCode { get; }
 
-    private Address(string street, string? street2, string city,
-        string? state, string postalCode, string countryCode)
+    private Address(string street, string? street2, string city, string? state, string postalCode, string countryCode)
     {
         Street = street;
         Street2 = street2;
@@ -88,8 +87,7 @@ public sealed class Address : ValueObject
     }
 
     /// <inheritdoc/>
-    public override string ToString() =>
-        string.Join(", ", new[]
+    public override string ToString() => string.Join(", ", new[]
         {
             Street, Street2, City, State, PostalCode, CountryCode
         }.Where(s => !string.IsNullOrEmpty(s)));

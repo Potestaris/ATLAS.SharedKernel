@@ -32,9 +32,7 @@ namespace ATLAS.Kernel.Domain.Entities;
 /// }
 /// </code>
 /// </example>
-public abstract class TenantEntityBase<TId> : AuditableEntityBase<TId>,
-    ITenantAware, ISoftDeletable
-    where TId : notnull
+public abstract class TenantEntityBase<TId> : AuditableEntityBase<TId>, ITenantAware, ISoftDeletable where TId : notnull
 {
     // ReSharper disable UnusedAutoPropertyAccessor.Global
     /// <inheritdoc/>

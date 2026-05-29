@@ -34,8 +34,7 @@ namespace ATLAS.Kernel.Domain.Entities;
 /// }
 /// </code>
 /// </example>
-public abstract class AggregateRoot<TId> : TenantEntityBase<TId>, IDomainEventHolder
-    where TId : notnull
+public abstract class AggregateRoot<TId> : TenantEntityBase<TId>, IDomainEventHolder where TId : notnull
 {
     private readonly List<IDomainEvent> _domainEvents = new();
 

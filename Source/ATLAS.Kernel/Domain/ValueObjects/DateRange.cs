@@ -41,8 +41,7 @@ public sealed class DateRange : ValueObject
     public static Result<DateRange> Create(DateOnly from, DateOnly to)
     {
         if (from > to)
-            return Error.Validation("DateRange.Invalid",
-                $"Start date ({from}) must not be after end date ({to}).");
+            return Error.Validation("DateRange.Invalid", $"Start date ({from}) must not be after end date ({to}).");
         return new DateRange(from, to);
     }
 
@@ -63,8 +62,7 @@ public sealed class DateRange : ValueObject
     /// <summary>
     /// Gets the duration of the range, or <see cref="TimeSpan.MaxValue"/> for open-ended ranges.
     /// </summary>
-    public TimeSpan Duration =>
-        To.HasValue
+    public TimeSpan Duration => To.HasValue
             ? To.Value.ToDateTime(TimeOnly.MinValue) - From.ToDateTime(TimeOnly.MinValue)
             : TimeSpan.MaxValue;
 
@@ -76,6 +74,5 @@ public sealed class DateRange : ValueObject
     }
 
     /// <inheritdoc/>
-    public override string ToString() =>
-        To.HasValue ? $"{From:yyyy-MM-dd}..{To:yyyy-MM-dd}" : $"{From:yyyy-MM-dd}..∞";
+    public override string ToString() => To.HasValue ? $"{From:yyyy-MM-dd}..{To:yyyy-MM-dd}" : $"{From:yyyy-MM-dd}..∞";
 }

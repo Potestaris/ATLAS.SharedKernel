@@ -59,8 +59,7 @@ public sealed class Result<T>
     /// </exception>
     public T Value => IsSuccess
         ? _value!
-        : throw new InvalidOperationException(
-            $"Cannot access Value of a failed Result. Error: {Error}");
+        : throw new InvalidOperationException($"Cannot access Value of a failed Result. Error: {Error}");
 
     /// <summary>
     /// Gets the error when <see cref="IsFailure"/> is <c>true</c>, or
@@ -102,40 +101,40 @@ public sealed class Result<T>
     /// Projects the success value to a new type using <paramref name="mapper"/>.
     /// If the result is a failure, the error is propagated without calling <paramref name="mapper"/>.
     /// </summary>
-    public Result<TOut> Map<TOut>(Func<T, TOut> mapper) =>
-        IsSuccess ? Result<TOut>.Ok(mapper(Value)) : Result<TOut>.Fail(Error);
+    public Result<TOut> Map<TOut>(Func<T, TOut> mapper) => IsSuccess ? Result<TOut>.Ok(mapper(Value)) : Result<TOut>.Fail(Error);
 
     /// <summary>
     /// Chains a function that itself returns a <see cref="Result{TOut}"/>.
     /// If the current result is a failure, the error is propagated.
     /// </summary>
-    public Result<TOut> Bind<TOut>(Func<T, Result<TOut>> binder) =>
-        IsSuccess ? binder(Value) : Result<TOut>.Fail(Error);
+    public Result<TOut> Bind<TOut>(Func<T, Result<TOut>> binder) => IsSuccess ? binder(Value) : Result<TOut>.Fail(Error);
 
     /// <summary>
     /// Projects the result to a value of type <typeparamref name="TOut"/> by
     /// executing either <paramref name="onSuccess"/> or <paramref name="onFailure"/>.
     /// </summary>
-    public TOut Match<TOut>(Func<T, TOut> onSuccess, Func<Error, TOut> onFailure) =>
-        IsSuccess ? onSuccess(Value) : onFailure(Error);
+    public TOut Match<TOut>(Func<T, TOut> onSuccess, Func<Error, TOut> onFailure) => IsSuccess ? onSuccess(Value) : onFailure(Error);
 
     /// <summary>Executes <paramref name="onSuccess"/> if the result is successful and returns <c>this</c>.</summary>
     public Result<T> OnSuccess(Action<T> onSuccess)
     {
-        if (IsSuccess) onSuccess(Value);
+        if (IsSuccess)
+            onSuccess(Value);
+
         return this;
     }
 
     /// <summary>Executes <paramref name="onFailure"/> if the result is a failure and returns <c>this</c>.</summary>
     public Result<T> OnFailure(Action<Error> onFailure)
     {
-        if (IsFailure) onFailure(Error);
+        if (IsFailure)
+            onFailure(Error);
+
         return this;
     }
 
     /// <summary>Converts this <see cref="Result{T}"/> to a non-generic <see cref="Result"/>.</summary>
-    public Result ToResult() =>
-        IsSuccess ? Result.Ok() : Result.Fail(Error);
+    public Result ToResult() => IsSuccess ? Result.Ok() : Result.Fail(Error);
 
     /// <inheritdoc/>
     public override string ToString() =>

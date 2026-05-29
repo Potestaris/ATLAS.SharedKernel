@@ -14,5 +14,5 @@ public abstract class BaseEntity
     /// </summary>
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long Id { get; set; }
+    public ulong Id { get; set; }
 }

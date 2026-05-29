@@ -44,8 +44,7 @@ namespace ATLAS.Kernel.Domain.Entities;
 /// }
 /// </code>
 /// </example>
-public abstract class ReferenceEntity<TId> : AuditableEntityBase<TId>, IMasterData, IActivatable
-    where TId : notnull
+public abstract class ReferenceEntity<TId> : AuditableEntityBase<TId>, IMasterData, IActivatable where TId : notnull
 {
     /// <inheritdoc/>
     public bool IsActive { get; private set; } = true;
@@ -59,14 +58,16 @@ public abstract class ReferenceEntity<TId> : AuditableEntityBase<TId>, IMasterDa
     /// <inheritdoc/>
     public void Activate()
     {
-        if (IsActive) return;
+        if (IsActive)
+            return;
         IsActive = true;
     }
 
     /// <inheritdoc/>
     public void Deactivate()
     {
-        if (!IsActive) return;
+        if (!IsActive)
+            return;
         IsActive = false;
     }
 }

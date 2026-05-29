@@ -38,10 +38,9 @@ namespace ATLAS.Kernel.Domain.Result;
 public sealed class ValidationResult
 {
     private static readonly ValidationResult _success =
-        new(Array.Empty<ValidationError>());
+        new([]);
 
-    private ValidationResult(IReadOnlyList<ValidationError> errors)
-        => Errors = errors;
+    private ValidationResult(IReadOnlyList<ValidationError> errors) => Errors = errors;
 
     /// <summary>Gets a value indicating whether validation succeeded (no errors).</summary>
     public bool IsValid => Errors.Count == 0;
@@ -66,10 +65,7 @@ public sealed class ValidationResult
         ArgumentNullException.ThrowIfNull(errors);
         List<ValidationError> list = errors.ToList();
 
-        if (list.Count == 0)
-            throw new ArgumentException("Cannot create a failed ValidationResult with zero errors.", nameof(errors));
-
-        return new ValidationResult(list);
+        return list.Count == 0 ? throw new ArgumentException("Cannot create a failed ValidationResult with zero errors.", nameof(errors)) : new ValidationResult(list);
     }
 
     /// <summary>
@@ -98,8 +94,6 @@ public sealed class ValidationResult
             throw new InvalidOperationException(
                 "Cannot convert a successful ValidationResult to Result<T>. Provide the value using Result<T>.Ok(value).");
 
-        return Result<T>.Fail(Error.Validation(
-            "Validation.Failed",
-            $"Validation failed with {Errors.Count} error(s)."));
+        return Result<T>.Fail(Error.Validation("Validation.Failed", $"Validation failed with {Errors.Count} error(s)."));
     }
 }
